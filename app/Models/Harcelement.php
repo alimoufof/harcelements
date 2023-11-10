@@ -14,4 +14,24 @@ class Harcelement extends Model
     protected $fillable = [
         'type',
     ];
+
+    public function signalements()
+    {
+        return $this->hasMany(Signalement::class);
+    }
+
+    public function tutoriels()
+    {
+        return $this->hasMany(Tutoriel::class);
+    }
+
+    public function publications()
+    {
+        return $this->hasMany(Publication::class);
+    }
+
+    public function blogs()
+    {
+        return $this->hasMany(Blog::class);
+    }
 }

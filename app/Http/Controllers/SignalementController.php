@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Signalement;
 use App\Http\Requests\StoreSignalementRequest;
 use App\Http\Requests\UpdateSignalementRequest;
+use App\Models\Harcelement;
 
 class SignalementController extends Controller
 {
@@ -24,7 +25,7 @@ class SignalementController extends Controller
      */
     public function index()
     {
-        $signalements = Signalement::all();
+        $signalements = Signalement::with('harcelement')->get();
         return view('admin.signalements.index', compact('signalements'));
     }
 
@@ -33,9 +34,11 @@ class SignalementController extends Controller
      */
     public function create()
     {
-        return view('admin.signalements.edit', [
+        return view('admin.signalements.create', [
             'signalement' => new Signalement(),
+            'harcelements' => Harcelement::pluck('type', 'id'),
         ]);
+        
     }
 
     /**
@@ -44,7 +47,7 @@ class SignalementController extends Controller
     public function store(StoreSignalementRequest $request)
     {
         $signalement = Signalement::create($request->validated());
-        return to_route('admin.signalement.index')->with('status', 'Ajout de signalement effectué avec succès');
+        return to_route('signalement.index')->with('status', 'Ajout effectué avec succès');
     }
 
     /**
@@ -54,6 +57,7 @@ class SignalementController extends Controller
     {
         return view('admin.signalements.edit', [
             'signalement' => $signalement,
+            'harcelements' => Harcelement::pluck('type', 'id'),
         ]);
     }
 
@@ -63,7 +67,7 @@ class SignalementController extends Controller
     public function update(UpdateSignalementRequest $request, Signalement $signalement)
     {
         $signalement->update($request->validated());
-        return to_route('admin.signalement.index')->with('status', 'Modification du signalement effectué avec succès');
+        return to_route('signalement.index')->with('status', 'Modification effectuée avec succès');
     }
 
     /**
@@ -72,6 +76,6 @@ class SignalementController extends Controller
     public function destroy(Signalement $signalement)
     {
         $signalement->delete();
-        return to_route('admin.signalement.index')->with('status', 'suppression du signalement effectué avec succès');
+        return to_route('signalement.index')->with('status', 'suppression effectuée avec succès');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Publication;
 use App\Http\Requests\StorePublicationRequest;
 use App\Http\Requests\UpdatePublicationRequest;
+use App\Models\Harcelement;
 
 class PublicationController extends Controller
 {
@@ -13,7 +14,7 @@ class PublicationController extends Controller
      */
     public function index()
     {
-        $publications = Publication::all();
+        $publications = Publication::with('harcelement')->get();
         return view('admin.publications.index', compact('publications'));
     }
 
@@ -22,8 +23,9 @@ class PublicationController extends Controller
      */
     public function create()
     {
-        return view('admin.publications.edit', [
+        return view('admin.publications.create', [
             'publication' => new Publication(),
+            'harcelements' => Harcelement::pluck('type', 'id'),
         ]);
     }
 
@@ -33,7 +35,7 @@ class PublicationController extends Controller
     public function store(StorePublicationRequest $request)
     {
         $publication = Publication::create($request->validated());
-        return to_route('admin.publication.index')->with('status', 'Ajout de la publication '. $request->titre . ' effectué avec succès');
+        return to_route('publication.index')->with('status', 'Ajout de la publication effectué avec succès');
     }
 
     /**
@@ -43,6 +45,7 @@ class PublicationController extends Controller
     {
         return view('admin.publications.edit', [
             'publication' => $publication,
+            'harcelements' => Harcelement::pluck('type', 'id'),
         ]);
     }
 
@@ -52,7 +55,7 @@ class PublicationController extends Controller
     public function update(UpdatePublicationRequest $request, Publication $publication)
     {
         $publication->update($request->validated());
-        return to_route('admin.publication.index')->with('status', 'Modification de la publication '. $request->titre . ' effectuée avec succès');
+        return to_route('publication.index')->with('status', 'Modification de la publication effectuée avec succès');
     }
 
     /**
@@ -61,6 +64,6 @@ class PublicationController extends Controller
     public function destroy(Publication $publication)
     {
         $publication->delete();
-        return to_route('admin.publication.index')->with('status', 'suppression de tutoriel '. $publication->titre . ' effectuée avec succès');
+        return to_route('publication.index')->with('status', 'suppression de la publication effectuée avec succès');
     }
 }

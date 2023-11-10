@@ -17,4 +17,14 @@ class Blog extends Model
         'contenu',
         'harcelement_id',
     ];
+
+    public function harcelement()
+    {
+        return $this->belongsTo(Harcelement::class, 'harcelement_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

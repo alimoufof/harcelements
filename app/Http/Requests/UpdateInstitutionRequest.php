@@ -26,7 +26,9 @@ class UpdateInstitutionRequest extends FormRequest
             'user_id' => ['required', 'numeric', 'exists:users,id'],
             'grade' => ['nullable', 'string', 'max:255'],
             'nom' => ['required', 'string', 'max:255'],
-            'image' => ['nullable', 'image', 'max:1024'],
+            'email' => ['required', 'email', 'max:255', 'unique:institutions,email'],
+            'adresse' => ['required', 'string', 'max:255'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpeg', 'max:1024'],
             'description' => ['nullable', 'string'],
         ];
     }

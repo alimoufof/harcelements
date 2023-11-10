@@ -1,21 +1,21 @@
 @extends("admin.layoutAdmin.admin")
 
-@section('title', 'Editer une institution')
+@section('title', 'Créer une institution')
 
 @section('content')
     <div class="container">
         <h1>@yield('title')</h1>
     
-        <form action="{{ route('institution.update', $institution) }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('institution.store') }}" method="post" enctype="multipart/form-data">
 
             @csrf
-            @method('PUT')
+            @method('POST')
             <div class="row">
                 <div class="col-4">
                     <div class="mb-3 form-group">
                         <label for="user_id" class="form-label">User</label>
-                        <input type="text" class="form-control @error('user_id') is-invalid @enderror" name="user_id" id="user_id" value="{{ Auth::user()->id }}" required readonly hidden>
-                        <input type="text" class="form-control @error('user_id') is-invalid @enderror" name="user_id" id="user_id" value="{{ Auth::user()->prenom }} {{ Auth::user()->nom }}" disabled>
+                        <input type="text" class="form-control @error('user_id') is-invalid @enderror" name="user_id" id="user_id" value="{{ Auth::user()->id }}" hidden readonly required>
+                        <input type="text" class="form-control @error('user_id') is-invalid @enderror" name="user_id" id="user_id" value="{{ Auth::user()->prenom }} {{ Auth::user()->prenom }}" disabled>
                         @error('user_id')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -37,11 +37,11 @@
                         </div>
                         @enderror
                     </div>
-                </div>
+                </div>          
                 <div class="col-4">
                     <div class="mb-3 form-group">
                         <label for="grade" class="form-label">Grade</label>
-                        <input type="text" class="form-control @error('grade') is-invalid @enderror" name="grade" id="grade" value="{{ $institution->grade }}">
+                        <input type="text" class="form-control @error('grade') is-invalid @enderror" name="grade" id="grade" value="{{ old('grade') }}">
                         @error('grade')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -50,9 +50,9 @@
                     </div>
                 </div>
                 <div class="col-4">
-                    <div class="mb-3 form-group">
+                    <div class=" form-group">
                         <label for="nom" class="form-label">Nom</label>
-                        <input type="text" class="form-control @error('nom') is-invalid @enderror" name="nom" id="nom" value="{{ $institution->nom }}">
+                        <input type="text" class="form-control @error('nom') is-invalid @enderror" name="nom" id="nom" value="{{ old('nom') }}">
                         @error('nom')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -63,7 +63,7 @@
                 <div class="col-4">
                     <div class="mb-3 form-group">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" id="email" value="{{ $institution->email }}">
+                        <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" id="email" value="{{ old('email') }}">
                         @error('email')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -74,7 +74,7 @@
                 <div class="col-4">
                     <div class="mb-3 form-group">
                         <label for="adresse" class="form-label">Adresse</label>
-                        <input type="text" class="form-control @error('adresse') is-invalid @enderror" name="adresse" id="adresse" value="{{ $institution->adresse }}">
+                        <input type="text" class="form-control @error('adresse') is-invalid @enderror" name="adresse" id="adresse" value="{{ old('adresse') }}">
                         @error('adresse')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -83,12 +83,9 @@
                     </div>
                 </div>
                 <div class="col-4">
-                    <div class="mb-3 form-group">
+                    <div class="mb-3">
                         <label for="image" class="form-label">Photo</label>
-                        <input type="file" class="form-control @error('image') is-invalid @enderror" name="image" id="image" value="{{ $institution->image }}">
-                        @if($institution->image)
-                            <img src="{{ asset('storage/' . $institution->image) }}" alt="{{ $institution->nom}} {{$institution->prenom}}" width="100">
-                        @endif
+                        <input type="file" class="form-control @error('image') is-invalid @enderror" name="image" id="image" value="{{ old('image') }}">
                         @error('image')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -98,8 +95,8 @@
                 </div>
                 <div class="col-8">
                     <div class="mb-3 form-group">
-                        <label for="description" class="form-label">Description</label>
-                        <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="description" cols="20" rows="5">{{ $institution->description }}</textarea>
+                        <label for="description" class="form-label">description</label>
+                        <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="description" cols="20" rows="5">{{ old('description') }}</textarea>
                         @error('description')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -111,7 +108,7 @@
             
             <div class="mt-4">
                 <button class="btn btn-primary">
-                        Modifier
+                        Créer
                 </button>
             </div>
         </form>

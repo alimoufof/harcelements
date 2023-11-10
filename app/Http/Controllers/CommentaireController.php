@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Commentaire;
 use App\Http\Requests\StoreCommentaireRequest;
 use App\Http\Requests\UpdateCommentaireRequest;
+use App\Models\Publication;
 
 class CommentaireController extends Controller
 {
@@ -13,7 +14,7 @@ class CommentaireController extends Controller
      */
     public function index()
     {
-        $commentaires = Commentaire::all();
+        $commentaires = Commentaire::with('publication')->get();
         return view('admin.commentaires.index', compact('commentaires'));
     }
 
@@ -22,8 +23,9 @@ class CommentaireController extends Controller
      */
     public function create()
     {
-        return view('admin.commentaires.edit', [
+        return view('admin.commentaires.create', [
             'commentaire' => new Commentaire(),
+            'publications' => Publication::pluck('type', 'id'),
         ]);
     }
 
@@ -33,7 +35,7 @@ class CommentaireController extends Controller
     public function store(StoreCommentaireRequest $request)
     {
         $commentaire = Commentaire::create($request->validated());
-        return to_route('admin.commentaire.index')->with('status', 'Ajout du commentaire effectué avec succès');
+        return to_route('commentaire.index')->with('status', 'Ajout du commentaire effectué avec succès');
     }
 
     /**
@@ -43,6 +45,7 @@ class CommentaireController extends Controller
     {
         return view('admin.commentaires.edit', [
             'commentaire' => $commentaire,
+            'publications' => Publication::pluck('type', 'id'),
         ]);
     }
 
@@ -52,7 +55,7 @@ class CommentaireController extends Controller
     public function update(UpdateCommentaireRequest $request, Commentaire $commentaire)
     {
         $commentaire->update($request->validated());
-        return to_route('admin.commentaire.index')->with('status', 'Modification du commentaire effectué  avec succès');
+        return to_route('commentaire.index')->with('status', 'Modification du commentaire effectuée  avec succès');
     }
 
     /**
@@ -61,6 +64,6 @@ class CommentaireController extends Controller
     public function destroy(Commentaire $commentaire)
     {
         $commentaire->delete();
-        return to_route('admin.commentaire.index')->with('status', 'suppression du commentaire effectuée avec succès');
+        return to_route('commentaire.index')->with('status', 'suppression du commentaire effectuée avec succès');
     }
 }

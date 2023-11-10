@@ -18,6 +18,8 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade');
             $table->string('grade')->nullable();
             $table->string('nom');
+            $table->string('email')->unique();
+            $table->string('adresse');
             $table->string('image')->nullable();
             $table->longText('description')->nullable();
             $table->timestamps();

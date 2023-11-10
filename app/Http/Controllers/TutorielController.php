@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tutoriel;
 use App\Http\Requests\StoreTutorielRequest;
 use App\Http\Requests\UpdateTutorielRequest;
+use App\Models\Harcelement;
 
 class TutorielController extends Controller
 {
@@ -13,7 +14,7 @@ class TutorielController extends Controller
      */
     public function index()
     {
-        $tutoriels = Tutoriel::all();
+        $tutoriels = Tutoriel::with('harcelement')->get();
         return view('admin.tutoriels.index', compact('tutoriels'));
     }
 
@@ -22,8 +23,9 @@ class TutorielController extends Controller
      */
     public function create()
     {
-        return view('admin.tutoriels.edit', [
+        return view('admin.tutoriels.create', [
             'tutoriel' => new Tutoriel(),
+            'harcelements' => Harcelement::pluck('type', 'id'),
         ]);
     }
 
@@ -33,7 +35,7 @@ class TutorielController extends Controller
     public function store(StoreTutorielRequest $request)
     {
         $tutoriel = Tutoriel::create($request->validated());
-        return to_route('admin.tutoriel.index')->with('status', 'Ajout du tutoriel effectué avec succès');
+        return to_route('tutoriel.index')->with('status', 'Ajout effectué avec succès');
     }
 
     /**
@@ -43,6 +45,7 @@ class TutorielController extends Controller
     {
         return view('admin.tutoriels.edit', [
             'tutoriel' => $tutoriel,
+            'harcelements' => Harcelement::pluck('type', 'id'),
         ]);
     }
 
@@ -52,7 +55,7 @@ class TutorielController extends Controller
     public function update(UpdateTutorielRequest $request, Tutoriel $tutoriel)
     {
         $tutoriel->update($request->validated());
-        return to_route('admin.tutoriel.index')->with('status', 'Modification du tutoriel effectuée avec succès');
+        return to_route('tutoriel.index')->with('status', 'Modification effectuée avec succès');
     }
 
     /**
@@ -61,6 +64,6 @@ class TutorielController extends Controller
     public function destroy(Tutoriel $tutoriel)
     {
         $tutoriel->delete();
-        return to_route('admin.tutoriel.index')->with('status', 'suppression du tutoriel effectuée avec succès');
+        return to_route('tutoriel.index')->with('status', 'suppression effectuée avec succès');
     }
 }

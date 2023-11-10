@@ -1,15 +1,16 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TutorielController;
 use App\Http\Controllers\CommentaireController;
 use App\Http\Controllers\HarcelementController;
 use App\Http\Controllers\InstitutionController;
 use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\SignalementController;
-use App\Http\Controllers\TutorielController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,29 +24,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
-// Route::get('contact', function () {
-//     return view('contact');
-// })->middleware('auth');
-// Route::get('/blog/{slug}-{id}', function (string $slug, string $id, Request $request) {
-//     return [
-//         'slug' => $slug,
-//         'id' => $id,
-//         'name' => $request->input('name'),
-//     ];
-// })->where([
-//     'id' => '[0-9]+',
-//     'slug' => '[a-z0-9\-]+'
-// ]);
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('contact', [App\Http\Controllers\HomeController::class, 'contact']);
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::prefix('admin')->name('admin.')->group(function() {
+Route::prefix('admin')->group(function() {
     Route::resource('harcelement', HarcelementController::class);  
     Route::resource('institution', InstitutionController::class);  
     Route::resource('tutoriel', TutorielController::class); 

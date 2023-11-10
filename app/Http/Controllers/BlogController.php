@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Blog;
 use App\Http\Requests\StoreBlogRequest;
 use App\Http\Requests\UpdateBlogRequest;
+use App\Models\Harcelement;
+use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
 {
@@ -13,7 +15,7 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blogs = Blog::all();
+        $blogs = Blog::with('harcelement')->get();
         return view('admin.blogs.index', compact('blogs'));
     }
 
@@ -22,8 +24,9 @@ class BlogController extends Controller
      */
     public function create()
     {
-        return view('admin.blogs.edit', [
+        return view('admin.blogs.create', [
             'blog' => new Blog(),
+            'harcelements' => Harcelement::pluck('type', 'id'),
         ]);
     }
 
@@ -32,8 +35,22 @@ class BlogController extends Controller
      */
     public function store(StoreBlogRequest $request)
     {
-        $blog = Blog::create($request->validated());
-        return to_route('admin.blog.index')->with('status', 'Ajout de blog '. $request->titre . ' effectué avec succès');
+        $blog = $request->validated();
+        if($request->hasFile('photo'))
+        {
+            $imagePath = $request->file('photo')->store('blog_photos', 'public');
+            $blog['photo'] = $imagePath;
+        }
+
+        Blog::create($blog);
+        return to_route('blog.index')->with('status', 'Ajout de blog effectué avec succès');
+    }
+
+    public function show(Blog $blog)
+    {
+        return view('admin.blogs.show', [
+            'blog' => $blog,
+        ]);
     }
 
     /**
@@ -43,6 +60,7 @@ class BlogController extends Controller
     {
         return view('admin.blogs.edit', [
             'blog' => $blog,
+            'harcelements' => Harcelement::pluck('type', 'id'),
         ]);
     }
 
@@ -51,8 +69,18 @@ class BlogController extends Controller
      */
     public function update(UpdateBlogRequest $request, Blog $blog)
     {
-        $blog->update($request->validated());
-        return to_route('admin.blog.index')->with('status', 'Modification du blog '. $request->titre . ' effectuée avec succès');
+        $data = $request->validated();
+        if($request->hasFile('photo'))
+        {
+            if($blog->photo)
+            {
+                Storage::disk('public')->delete($blog->photo);
+            }
+            $imagePath = $request->file('photo')->store('blog_photos', 'public');
+            $data['photo'] = $imagePath;
+        }
+        $blog->update($data);   
+        return to_route('admin.blog.index')->with('status', 'Modification du blog effectuée avec succès');
     }
 
     /**
@@ -60,7 +88,11 @@ class BlogController extends Controller
      */
     public function destroy(Blog $blog)
     {
+        if($blog->photo)
+        {
+            Storage::disk('public')->delete($blog->photo);
+        }
         $blog->delete();
-        return to_route('admin.signalement.index')->with('status', 'suppression du tutoriel '. $blog->titre . ' effectuée avec succès');
+        return to_route('blog.index')->with('status', 'suppression du tutoriel effectuée avec succès');
     }
 }

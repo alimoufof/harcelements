@@ -1,14 +1,15 @@
 @extends("admin.layoutAdmin.admin")
 
-@section('title', 'Editer un signalement')
+@section('title', 'Créer un signalement')
 
 @section('content')
     <div class="container">
         <h1>@yield('title')</h1>
-        <form action="{{ route('signalement.update', $signalement) }}" method="post">
+    
+        <form action="{{ route('signalement.store', $signalement) }}" method="post">
 
             @csrf
-            @method('PUT')
+            @method('POST')
             <div class="row">
                 <div class="col-4">
                     <div class="mb-3">
@@ -28,20 +29,20 @@
                         <select name="harcelement_id" id="harcelement_id" class="form-control @error('harcelement_id') is-invalid @enderror">
                             <option value="">Veuillez selectionner un harcelement</option>
                             @foreach($harcelements as $key => $harcelement)
-                                <option @selected($signalement->harcelement_id === $key) value="{{ $key }}">{{ $harcelement }}</option>
+                                <option value="{{ $key }}" {{ old('harcelement_id') == $key ? 'selected' : '' }}>{{ $harcelement }}</option>
                             @endforeach
                         </select>
                         @error('harcelement_id')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
                         @enderror
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="mb-3">
                         <label for="titre" class="form-label">Titre</label>
-                        <input type="text" class="form-control @error('titre') is-invalid @enderror" name="titre" id="titre" value="{{ $signalement->titre }}">
+                        <input type="text" class="form-control @error('titre') is-invalid @enderror" name="titre" id="titre" value="{{ old('titre') }}">
                         @error('titre')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -52,7 +53,7 @@
                 <div class="col-6">
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
-                        <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="description" cols="30" rows="10">{{ $signalement->description }}</textarea>
+                        <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="description" cols="30" rows="10">{{ old('description') }}</textarea>
                         @error('description')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -63,7 +64,7 @@
                 <div class="col-6">
                     <div class="mb-3">
                         <label for="contenu" class="form-label">Contenu</label>
-                        <textarea name="contenu" class="form-control @error('contenu') is-invalid @enderror" id="contenu" cols="30" rows="10">{{ $signalement->contenu }}</textarea>
+                        <textarea name="contenu" class="form-control @error('contenu') is-invalid @enderror" id="contenu" cols="30" rows="10">{{ old('contenu') }}</textarea>
                         @error('contenu')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -71,9 +72,10 @@
                         @enderror
                     </div>
                 </div>
+                
             <div class="mt-4">
                 <button class="btn btn-primary">
-                    Modifier
+                    Créer
                 </button>
             </div>
             </div>

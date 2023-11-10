@@ -11,7 +11,7 @@ class UpdateBlogRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,7 @@ class UpdateBlogRequest extends FormRequest
     {
         return [
             'user_id' => ['required', 'numeric', 'exists:users,id'],
-            'photo' => ['required', 'image', 'max:1024'],
+            'photo' => ['required', 'image', 'mimes:jpg,png,jpeg', 'max:1024'],
             'titre' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:1000'],
             'contenu' => ['required', 'string', 'max:5000'],

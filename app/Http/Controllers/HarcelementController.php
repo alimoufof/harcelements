@@ -23,7 +23,7 @@ class HarcelementController extends Controller
      */
     public function create()
     {
-        return view('admin.harcelements.edit', [
+        return view('admin.harcelements.create', [
             'harcelement' => new Harcelement(),
         ]);
     }
@@ -34,7 +34,7 @@ class HarcelementController extends Controller
     public function store(StoreHarcelementRequest $request)
     {
         $harcelement = Harcelement::create($request->validated());
-        return to_route('admin.harcelement.index')->with('status', 'Ajout de '. $request->type . ' effectué avec succès');
+        return to_route('harcelement.index')->with('status', 'Ajout effectué avec succès');
     }
 
 
@@ -54,7 +54,7 @@ class HarcelementController extends Controller
     public function update(UpdateHarcelementRequest $request, Harcelement $harcelement)
     {
         $harcelement->update($request->validated());
-        return to_route('admin.harcelement.index')->with('status', 'Modification de '. $request->type . ' effectué avec succès');
+        return to_route('harcelement.index')->with('status', 'Modification effectuée avec succès');
     }
 
     /**
@@ -63,6 +63,6 @@ class HarcelementController extends Controller
     public function destroy(Harcelement $harcelement)
     {
         $harcelement->delete();
-        return to_route('admin.harcelement.index')->with('status', 'Suppression de '. $harcelement->type . ' effectué avec succès');
+        return to_route('harcelement.index')->with('status', 'Suppression effectuée avec succès');
     }
 }

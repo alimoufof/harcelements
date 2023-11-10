@@ -16,4 +16,14 @@ class Tutoriel extends Model
         'link',
         'harcelement_id',
     ];
+
+    public function harcelement()
+    {
+        return $this->belongsTo(Harcelement::class, 'harcelement_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
