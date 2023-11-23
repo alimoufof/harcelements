@@ -83,7 +83,7 @@ class InstitutionController extends Controller
             $imagePath = $request->file('image')->store('institution_images', 'public');
             $data['image'] = $imagePath;
         }
-        
+        $institution->update($data);
         return to_route('institution.index')->with('status', "Modification de l'institution effectuée avec succès");
     }
 
