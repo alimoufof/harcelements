@@ -38,13 +38,13 @@
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{route('home')}}"><i class="material-icons">home</i>Home</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('institution.index') }}">Institution</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{{ $institution->user->prenom }} {{ $institution->user->nom }}</li>
+                <li class="breadcrumb-item"><a href="{{ route('publication.index') }}">Publications</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ $publication->user->prenom }} {{ $publication->user->nom }}</li>
               </ol>
             </nav>
             <div class="create-item">
-                <a href="{{ route('institution.edit', $institution) }}" class="theme-primary-btn btn btn-primary"><i class="material-icons">add</i>Modifier l'institution</a>
-                <a href="{{ route('institution.index') }}" class="btn btn-secondary"><i class="material-icons md-18">arrow_back</i>Retour à la liste des institutions</a>
+                <a href="{{ route('publication.edit', $publication) }}" class="theme-primary-btn btn btn-primary"><i class="material-icons">add</i>Modifier le publication</a>
+                <a href="{{ route('publication.index') }}" class="btn btn-secondary"><i class="material-icons md-18">arrow_back</i>Retour à la liste des publications</a>
             </div>
         </div>
           <!--  Header BreadCrumb -->   
@@ -60,59 +60,49 @@
                             <div class="form-group row">
                                 <div class="col-md-4">Utilisateur</div>
                                 <div class="col-md-8">
-                                    {{ $institution->user->prenom }} {{ $institution->user->nom }}
+                                    {{ $publication->user->prenom }} {{ $publication->user->nom }}
 
                                  </div>
                             </div>
 
                             <div class="form-group row">
-                                <div class="col-md-4">Type d'institution</div>
+                                <div class="col-md-4">Harcelement</div>
                                 <div class="col-md-8">
-                                    {{ $institution->type }}
+                                    {{ $publication->harcelement->type }}
                                  </div>
                             </div>
 
                             <div class="form-group row">
-                                <div class="col-md-4">Nom</div>
+                                <div class="col-md-4">Titre</div>
                                 <div class="col-md-8">
-                                    {{ $institution->nom }}
+                                    {{ $publication->titre }}
                                  </div>
                             </div>
+
 
                             <div class="form-group row">
-                                <div class="col-md-4">Grade</div>
+                                <div class="col-md-4">Type</div>
                                 <div class="col-md-8">
-                                    {{ $institution->grade }}
+                                    {{ $publication->type }}
+
+
                                  </div>
                             </div>
-
-                            <div class="form-group row">
-                                <div class="col-md-4">Email</div>
-                                <div class="col-md-8">
-                                    {{ $institution->email }}
-                                 </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <div class="col-md-4">Adresse</div>
-                                <div class="col-md-8">
-                                    {{ $institution->adresse }}
-                                 </div>
-                            </div>
-
+                            
                             <div class="form-group row">
                                 <div class="col-md-4">Description</div>
                                 <div class="col-md-8">
-                                    {{ $institution->description }}
+                                    {{ $publication->description }}
 
                                  </div>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="user-thumb">
-                                    <img id="profile-photo" src="{{ asset('storage/' . $institution->image) }}"  alt="">
-                                </div>
-    
+                            <div class="form-group row">
+                                <div class="col-md-4">Contenu</div>
+                                <div class="col-md-8">
+                                    {{ $publication->contenu }}
+
+                                 </div>
                             </div>
 
                         </div>

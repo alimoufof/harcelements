@@ -38,6 +38,11 @@ class TutorielController extends Controller
         return to_route('tutoriel.index')->with('status', 'Ajout effectué avec succès');
     }
 
+    public function show(Tutoriel $tutoriel) 
+    {
+        return view('admin.tutoriels.show', compact('tutoriel'));  
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

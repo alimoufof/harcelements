@@ -37,6 +37,11 @@ class HarcelementController extends Controller
         return to_route('harcelement.index')->with('status', 'Ajout effectué avec succès');
     }
 
+    public function show(Harcelement $harcelement)
+    {
+        return view('admin.harcelements.show', compact('harcelement'));
+    }
+
 
     /**
      * Show the form for editing the specified resource.

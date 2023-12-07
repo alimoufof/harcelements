@@ -4,10 +4,10 @@
         <meta name="description" content="">
     
         <!--====== Title ======-->
-        <title>@yield('title')</title>
+        <title>@yield('title', config('APP_NAME', 'Harcelement'))</title>
     
     <!--====== Favicon Icon ======-->
-    <link rel="shortcut icon" href="{{ asset('images/icons/favicon.png" type="image/png') }}">
+    <link rel="shortcut icon" href="{{ asset('images/icons/favicon.png') }}" type="image/png">
 
 
     <!--====== Google Fonts ======-->
@@ -29,10 +29,10 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
 
     <!--====== Style css ======-->
-    <link rel="stylesheet" href="asset('css/style.css') }}">
-    <link rel="stylesheet" href="asset('css/sidebar.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
 	   <!--====== Responsive css ======-->
-    <link rel="stylesheet" href="asset('css/responsive.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
 
      <!--====== CkEditors js ======-->
-    <link rel="stylesheet" href="asset('js/ckeditor.js') }} ">
+    <link rel="stylesheet" href="{{ asset('js/ckeditor.js') }} ">

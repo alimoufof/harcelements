@@ -1,45 +1,99 @@
-@extends("admin.layoutAdmin.admin")
 
-@section('title', 'Tous les commentaires')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('content')
+<head>
 
-    <div class="d-flex justify-content-between align-items-center">
-        <h1>@yield('title')</h1>
-        <a href="{{ route('commentaire.create') }}" class="btn btn-primary">Ajouter un commentaire</a>
+    @include('layouts.partials.head')
+
+</head>
+<body>
+
+<!-- Prealoder -->
+<div class="spinner_body">
+   <div class="spinner"></div>  
+</div>
+
+<!-- Prealoder -->
+
+
+<!--====== Start Header Section======-->
+    @include('layouts.partials.navbar')
+<!--====== End Header Section======-->
+
+
+<!--====== Start Left Sidebar Section======-->
+    @include('layouts.partials.sidebar')
+<!--====== End Left Sidebar Section======-->
+
+
+<!--====== Start Main Wrapper Section======-->
+<div class="page-content-wrapper">
+    <!--  Header BreadCrumb -->
+     <div class="content-header">
+         <nav aria-label="breadcrumb">
+           <ol class="breadcrumb">
+             <li class="breadcrumb-item"><a href="{{route('home')}}"><i class="material-icons">home</i>Home</a></li>
+             
+             <li class="breadcrumb-item active" aria-current="page">Commentaires</li>
+           </ol>
+         </nav>
+         <div class="create-item">
+             <a href="{{ route('commentaire.create') }}" class="theme-primary-btn btn btn-primary"><i class="material-icons">add</i>Ajouter un commentaire</a>
+             <a href="" name='export' class=" btn btn-secondary"><i class="material-icons">add</i>Export Execel</a>
+         </div>
+     </div>
+       <!--  Header BreadCrumb --> 
+        <!--  main-content -->   
+    <div class="main-content">
+    <!-- Users DataTable-->
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <div class="card bg-white">
+                    <div class="card-body mt-3">
+                    <div class="table-responsive">
+                        <table id="usersTable" class="table table-striped table-borderless" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>User</th>
+                                    <th>Publication</th>
+                                    <th>Description</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($commentaires as $key => $commentaire)
+                                    <tr>
+                                        <td>{{ $key + 1 }}</td>
+                                        <td>{{ $commentaire->user->nom . ' ' . $commentaire->user->prenom }}</td>
+                                        <td>{{ $commentaire->publication->type }}</td>
+                                        <td>{{ $commentaire->contenu }}</td>
+                                        <td>
+                                            <div class="d-flex gap-2 justify-content-end">
+                                                <a class="btn btn-sm btn-secondary" href="{{route('commentaire.show', $commentaire)}}">Voir</a>  
+                                                <a class="btn btn-sm btn-info" href="{{route('commentaire.edit', $commentaire)}}">Modifier</a>
+                                                <form action="{{route('commentaire.destroy', $commentaire)}}" method="post">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-sm btn-danger">Supprimer</button>
+                                                </form> 
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
+<!--====== End Main Wrapper Section======-->
 
-        <table class="table table-striped mt-4">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">User</th>
-                    <th scope="col">Contenu</th>
-                    <th scope="col">Publication</th>
-                    <th class="text-end">Actions</th>
-                </tr>
-            </thead>
+    @include('layouts.partials.footer')
 
-            <tbody>
-                @foreach($commentaires as $commentaire)
-                    <tr>
-                        <td>{{ $commentaire->id }}</td>
-                        <td>{{ $commentaire->user->prenom . ' ' . $commentaire->user->nom }}</td>
-                        <td>{{ $commentaire->contenu }}</td>
-                        <td>{{ $commentaire->publication->type }}</td>
-                        <td>
-                            <div class="d-flex gap-2 justify-content-end">
-                                <a href="{{ route('commentaire.edit', $commentaire) }}" class="btn btn-info">Modifier</a>
-                                <form action="{{ route('commentaire.destroy', $commentaire) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-danger">Supprimer</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-@endsection
+</body>
+</html>

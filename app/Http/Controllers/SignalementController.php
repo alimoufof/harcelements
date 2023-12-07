@@ -25,7 +25,7 @@ class SignalementController extends Controller
      */
     public function index()
     {
-        $signalements = Signalement::with('harcelement')->get();
+        $signalements = Signalement::with('harcelement')->paginate(2);
         return view('admin.signalements.index', compact('signalements'));
     }
 
@@ -39,6 +39,11 @@ class SignalementController extends Controller
             'harcelements' => Harcelement::pluck('type', 'id'),
         ]);
         
+    }
+
+    public function show(Signalement $signalement)
+    {
+        return view('admin.signalements.show', compact('signalement'));
     }
 
     /**

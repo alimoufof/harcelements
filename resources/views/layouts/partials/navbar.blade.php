@@ -7,9 +7,9 @@
         <nav class="navbar navbar-expand-lg navbar-bg">
           
           <div class="brand-logo">
-            <a class="navbar-brand" href="index.html" id="menu-action">
-              <div class="user-photo d-desktop"><img src="assets/images/icons/favicon.png" alt=""></div>
-              <span>Benzi Admin Panel</span>
+            <a class="navbar-brand" href="{{route('home')}}" id="menu-action">
+              <div class="user-photo d-desktop"><img src="{{ asset('images/icons/favicon.png') }}" alt=""></div>
+              <span>Harcelement</span>
             </a>    
             <div id="nav-toggle">
                 <div class="cta">
@@ -33,8 +33,8 @@
             <ul class="navbar-nav user-info ml-auto mt-2 mt-lg-0">
               <li class="nav-item dropdown show">
                 <a href="#" class="navbar-nav-link dropdown-toggle text-light" data-toggle="dropdown" aria-expanded="true">
-                  <div class="user-photo"><img src="https://dw3i9sxi97owk.cloudfront.net/uploads/thumbs/db9c4e1327eb8fe5e9395a4b04e1ea4a_70x70.jpg" alt=""></div>
-                  admin@admin.com
+                  <div class="user-photo"><img src="{{asset('')}}" alt=""></div>
+                  admin@admin.com 
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
                   <a href="account.html" class="dropdown-item"> 
@@ -42,7 +42,7 @@
                     supervisor_account
                     </i>
                   Account Settings</a>
-                  <div class="menu-dropdown-divider"></div>
+                  <div class="menu-dropdown-divider"></div> 
                   <a class="dropdown-item" href="login.html"><i class="material-icons">exit_to_app</i>Logout</a>
                 </div>
               </li>

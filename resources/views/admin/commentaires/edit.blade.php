@@ -1,62 +1,60 @@
-@extends("admin.layoutAdmin.admin")
 
-@section('title', 'Editer un commentaire')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('content')
-    <div class="container">
-        <h1>@yield('title')</h1>
-    
-        <form action="{{ route('commentaire.update', $commentaire) }}" method="post">
+<head>
 
-            @csrf
-            @method($commentaire->exists ? 'PUT' : 'POST')
-            <div class="row">
-            <div class="col-6">
-                    <div class="mb-3">
-                        <label for="user_id" class="form-label">User</label>
-                        <input type="number" class="form-control @error('user_id') is-invalid @enderror" name="user_id" id="user_id" value="{{ Auth::user()->id }}" required readonly hidden>
-                        <input type="text" class="form-control @error('user_id') is-invalid @enderror" name="user_id" id="user_id" value="{{ Auth::user()->prenom }} {{ Auth::user()->nom }}" disabled>
-                        @error('user_id')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="mb-3">
-                        <label for="publication_id" class="form-label">Publication</label>
-                        <select name="publication_id" id="publication_id" class="form-control @error('publication_id') is-invalid @enderror">
-                            <option value="">Veuillez selectionner le type de publication</option>
-                            @foreach($publications as $key => $publication)
-                                <option @selected($commentaire->publication_id === $key) value="{{ $key }}">{{ $publication }}</option>
-                            @endforeach
-                        </select>
-                        @error('publication_id')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="mb-3">
-                        <label for="contenu" class="form-label">Contenu</label>
-                        <textarea name="contenu" class="form-control @error('contenu') is-invalid @enderror" id="contenu" cols="30" rows="10">{{ $commentaire->contenu }}</textarea>
-                        @error('contenu')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-                </div>
-                
-            <div class="mt-4">
-                <button class="btn btn-primary">
-                    Modifier
-                </button>
-            </div>
-            </div>
-        </form>
-    </div>
-@endsection
+    @include('layouts.partials.head')
+
+</head>
+<body>
+
+<!-- Prealoder -->
+<div class="spinner_body">
+   <div class="spinner"></div>  
+</div>
+
+<!-- Prealoder -->
+
+
+<!--====== Start Header Section======-->
+    @include('layouts.partials.navbar')
+<!--====== End Header Section======-->
+
+
+<!--====== Start Left Sidebar Section======-->
+    @include('layouts.partials.sidebar')
+<!--====== End Left Sidebar Section======-->
+
+
+<!--====== Start Main Wrapper Section======-->
+<section class="d-flex" id="wrapper">
+  
+    <div class="page-content-wrapper">
+       <!--  Header BreadCrumb -->
+        <div class="content-header">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{route('home')}}"><i class="material-icons">home</i>Home</a></li>
+                <li class="breadcrumb-item"><a href="{{route('commentaire.index')}}">Commentaire</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Modifier un commentaire</li>
+              </ol>
+            </nav>
+        </div>
+          <!--  Header BreadCrumb -->   
+          <!-- Create New User -->   
+        @include('admin.commentaires._form')
+         <!-- Create New User-->   
+
+
+
+    </div>  
+        <!--  main-content -->    
+
+</section>
+<!--====== End Main Wrapper Section======-->
+
+    @include('layouts.partials.footer')
+
+</body>
+</html>

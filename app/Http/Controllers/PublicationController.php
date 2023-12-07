@@ -38,6 +38,11 @@ class PublicationController extends Controller
         return to_route('publication.index')->with('status', 'Ajout de la publication effectué avec succès');
     }
 
+    public function show(Publication $publication)
+    {
+        return view('admin.publications.show', compact('publication')); 
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

@@ -1,84 +1,60 @@
-@extends("admin.layoutAdmin.admin")
 
-@section('title', 'Editer un tutoriel')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('content')
-    <div class="container">
-        <h1>@yield('title')</h1>
-    
-        <form action="{{ route('tutoriel.update', $tutoriel) }}" method="post">
+<head>
 
-            @csrf
-            @method('PUT')
-            
-            <div class="row">
-                <div class="col-4">
-                    <div class="mb-3">
-                        <label for="user_id" class="form-label">User</label>
-                        <input type="number" class="form-control @error('user_id') is-invalid @enderror" name="user_id" id="user_id" value="{{ Auth::user()->id }}" required readonly hidden>
-                        <input type="text" class="form-control @error('user_id') is-invalid @enderror" name="user_id" id="user_id" value="{{ Auth::user()->prenom }} {{ Auth::user()->nom }}" disabled>
-                        @error('user_id')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="mb-3">
-                        <label for="harcelement_id" class="form-label">Harcelement</label>
-                        <select name="harcelement_id" id="harcelement_id" class="form-control @error('harcelement_id') is-invalid @enderror">
-                            <option value="">Veuillez séléctionner un harcelement</option>
-                            @foreach($harcelements as $key => $harcelement)
-                                <option value="{{ $key }}" @selected($tutoriel->harcelement_id === $key)>{{ $harcelement }}</option>
-                            @endforeach
-                        </select>
-                        @error('harcelement_id')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="mb-3">
-                        <label for="titre" class="form-label">Titre</label>
-                        <input type="text" class="form-control @error('titre') is-invalid @enderror" name="titre" id="titre" value="{{ $tutoriel->titre }}">
-                        @error('titre')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="mb-3">
-                        <label for="link" class="form-label">Lien</label>
-                        <input type="text" class="form-control @error('link') is-invalid @enderror" name="link" id="link" value="{{$tutoriel->link }}">
-                        @error('link')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col-8">
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Description</label>
-                        <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="description" cols="30" rows="10">{{ $tutoriel->description }}</textarea>
-                        @error('description')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-                </div>
-            </div>
-            <div class="mt-4">
-                <button class="btn btn-primary">
-                        Modifier
-                </button>
-            </div>
-        </form>
-    </div>
-@endsection
+    @include('layouts.partials.head')
+
+</head>
+<body>
+
+<!-- Prealoder -->
+<div class="spinner_body">
+   <div class="spinner"></div>  
+</div>
+
+<!-- Prealoder -->
+
+
+<!--====== Start Header Section======-->
+    @include('layouts.partials.navbar')
+<!--====== End Header Section======-->
+
+
+<!--====== Start Left Sidebar Section======-->
+    @include('layouts.partials.sidebar')
+<!--====== End Left Sidebar Section======-->
+
+
+<!--====== Start Main Wrapper Section======-->
+<section class="d-flex" id="wrapper">
+  
+    <div class="page-content-wrapper">
+       <!--  Header BreadCrumb -->
+        <div class="content-header">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{route('home')}}"><i class="material-icons">home</i>Home</a></li>
+                <li class="breadcrumb-item"><a href="{{route('tutoriel.index')}}">Tutoriel</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Modifier un tutoriel</li>
+              </ol>
+            </nav>
+        </div>
+          <!--  Header BreadCrumb -->   
+          <!-- Create New User -->   
+        @include('admin.tutoriels._form')
+         <!-- Create New User-->   
+
+
+
+    </div>  
+        <!--  main-content -->    
+
+</section>
+<!--====== End Main Wrapper Section======-->
+
+    @include('layouts.partials.footer')
+
+</body>
+</html>

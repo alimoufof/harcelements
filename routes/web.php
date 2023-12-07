@@ -9,8 +9,11 @@ use App\Http\Controllers\TutorielController;
 use App\Http\Controllers\CommentaireController;
 use App\Http\Controllers\HarcelementController;
 use App\Http\Controllers\InstitutionController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PublicationController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SignalementController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,4 +43,7 @@ Route::prefix('admin')->group(function() {
     Route::resource('blog', BlogController::class);
     Route::resource('publication', PublicationController::class);
     Route::resource('commentaire', CommentaireController::class);
+    Route::resource('user', UserController::class);
+    Route::resource('role', RoleController::class);
+    Route::resource('permission', PermissionController::class);
 });

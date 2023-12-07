@@ -38,6 +38,11 @@ class CommentaireController extends Controller
         return to_route('commentaire.index')->with('status', 'Ajout du commentaire effectué avec succès');
     }
 
+    public function show(Commentaire $commentaire)
+    {
+        return view('admin.commentaires.show', compact('commentaire')); 
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
