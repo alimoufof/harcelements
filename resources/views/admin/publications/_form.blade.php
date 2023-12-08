@@ -9,8 +9,7 @@
                 <div class="form-group row">
                     <div class="col-md-2">User <span class="text-danger"> * </span></div>
                     <div class="col-md-4">
-                        <input id="user_id" type="number" class="form-control @error('user_id') is-invalid @enderror" name="user_id" value="{{ Auth::user()->id  }}" required readonly hidden>
-                        <input type="text" class="form-control @error('user_id') is-invalid @enderror" name="user_id" id="user_id" value="{{ Auth::user()->prenom }} {{ Auth::user()->nom  }}" disabled autofocus="" >
+                        <input id="user_id" type="number" class="form-control @error('user_id') is-invalid @enderror" name="user_id" value="{{ $user_id->exists ? $user_id->titre : old('titre') }}" required readonly hidden>
                         @error('user_id')
                         <div class="invalid-feedback" role="alert">
                             {{ $message }}

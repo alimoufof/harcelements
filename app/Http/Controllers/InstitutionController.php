@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Institution;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreInstitutionRequest;
 use App\Http\Requests\UpdateInstitutionRequest;
-use App\Models\User;
-use Illuminate\Support\Facades\Storage;
 
 class InstitutionController extends Controller
 {
@@ -15,6 +16,12 @@ class InstitutionController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+        if(!$user->can('list_institution'))
+        {
+            return redirect(route('home'))->with('info', 'Vous n\'avez pas l\'autorisation requise pour accéder à cette ressource');
+        }
+
         $institutions = Institution::all();
         return view('admin.institutions.index', compact('institutions'));
     }
@@ -24,6 +31,12 @@ class InstitutionController extends Controller
      */
     public function create()
     {
+        $user = Auth::user();
+        if(!$user->can('create_institution'))
+        {
+            return redirect(route('home'))->with('info', 'Vous n\'avez pas l\'autorisation requise pour accéder à cette ressource');
+        }
+
         return view('admin.institutions.create', [
             'institution' => new Institution(),
         ]);
@@ -31,6 +44,12 @@ class InstitutionController extends Controller
 
     public function show(Institution $institution)
     {
+        $user = Auth::user();
+        if(!$user->can('show_institution'))
+        {
+            return redirect(route('home'))->with('info', 'Vous n\'avez pas l\'autorisation requise pour accéder à cette ressource');
+        }
+
         return view('admin.institutions.show', [
             'institution' => $institution,
         ]);
@@ -41,6 +60,12 @@ class InstitutionController extends Controller
      */
     public function store(StoreInstitutionRequest $request)
     {
+        $user = Auth::user();
+        if(!$user->can('create_institution'))
+        {
+            return redirect(route('home'))->with('info', 'Vous n\'avez pas l\'autorisation requise pour accéder à cette ressource');
+        }
+
         $data = $request->validated();
 
         if($request->hasFile('image'))
@@ -60,6 +85,12 @@ class InstitutionController extends Controller
      */
     public function edit(Institution $institution)
     {
+        $user = Auth::user();
+        if(!$user->can('edit_institution'))
+        {
+            return redirect(route('home'))->with('info', 'Vous n\'avez pas l\'autorisation requise pour accéder à cette ressource');
+        }
+
         // dd($institution->type);
         return view('admin.institutions.edit', [
             'institution' => $institution,
@@ -71,6 +102,12 @@ class InstitutionController extends Controller
      */
     public function update(UpdateInstitutionRequest $request, Institution $institution)
     {
+        $user = Auth::user();
+        if(!$user->can('edit_institution'))
+        {
+            return redirect(route('home'))->with('info', 'Vous n\'avez pas l\'autorisation requise pour accéder à cette ressource');
+        }
+
         $data = $request->validated();
 
         if($request->hasFile('image'))
@@ -92,6 +129,11 @@ class InstitutionController extends Controller
      */
     public function destroy(Institution $institution)
     {
+        $user = Auth::user();
+        if(!$user->can('delete_institution'))
+        {
+            return redirect(route('home'))->with('info', 'Vous n\'avez pas l\'autorisation requise pour accéder à cette ressource');
+        }
         if($institution->image)
         {
             Storage::disk('public')->delete($institution->image);

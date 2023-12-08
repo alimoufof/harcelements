@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
-use App\Http\Requests\StoreBlogRequest;
-use App\Http\Requests\UpdateBlogRequest;
 use App\Models\Harcelement;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreBlogRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\UpdateBlogRequest;
 
 class BlogController extends Controller
 {
@@ -15,6 +16,12 @@ class BlogController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+        if(!$user->can('list_blog'))
+        {
+            return redirect(route('home'))->with('info', 'Vous n\'avez pas l\'autorisation requise pour accéder à cette ressource');
+        }
+
         $blogs = Blog::with('harcelement')->get();
         return view('admin.blogs.index', compact('blogs'));
     }
@@ -24,6 +31,12 @@ class BlogController extends Controller
      */
     public function create()
     {
+        $user = Auth::user();
+        if(!$user->can('create_blog'))
+        {
+            return redirect(route('home'))->with('info', 'Vous n\'avez pas l\'autorisation requise pour accéder à cette ressource');
+        }
+
         return view('admin.blogs.create', [
             'blog' => new Blog(),
             'harcelements' => Harcelement::pluck('type', 'id'),
@@ -35,6 +48,12 @@ class BlogController extends Controller
      */
     public function store(StoreBlogRequest $request)
     {
+        $user = Auth::user();
+        if(!$user->can('create_blog'))
+        {
+            return redirect(route('home'))->with('info', 'Vous n\'avez pas l\'autorisation requise pour accéder à cette ressource');
+        }
+
         $blog = $request->validated();
         if($request->hasFile('photo'))
         {
@@ -48,6 +67,12 @@ class BlogController extends Controller
 
     public function show(Blog $blog)
     {
+        $user = Auth::user();
+        if(!$user->can('show_blog'))
+        {
+            return redirect(route('home'))->with('info', 'Vous n\'avez pas l\'autorisation requise pour accéder à cette ressource');
+        }
+
         return view('admin.blogs.show', [
             'blog' => $blog,
         ]);
@@ -58,6 +83,12 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog)
     {
+        $user = Auth::user();
+        if(!$user->can('edit_blog'))
+        {
+            return redirect(route('home'))->with('info', 'Vous n\'avez pas l\'autorisation requise pour accéder à cette ressource');
+        }
+
         return view('admin.blogs.edit', [
             'blog' => $blog,
             'harcelements' => Harcelement::pluck('type', 'id'),
@@ -69,6 +100,12 @@ class BlogController extends Controller
      */
     public function update(UpdateBlogRequest $request, Blog $blog)
     {
+        $user = Auth::user();
+        if(!$user->can('update_blog'))
+        {
+            return redirect(route('home'))->with('info', 'Vous n\'avez pas l\'autorisation requise pour accéder à cette ressource');
+        }
+
         $data = $request->validated();
         if($request->hasFile('photo'))
         {
@@ -88,6 +125,12 @@ class BlogController extends Controller
      */
     public function destroy(Blog $blog)
     {
+        $user = Auth::user();
+        if(!$user->can('delete_blog'))
+        {
+            return redirect(route('home'))->with('info', 'Vous n\'avez pas l\'autorisation requise pour accéder à cette ressource');
+        }
+
         if($blog->photo)
         {
             Storage::disk('public')->delete($blog->photo);

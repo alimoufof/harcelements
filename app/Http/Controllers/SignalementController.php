@@ -25,6 +25,12 @@ class SignalementController extends Controller
      */
     public function index()
     {
+        // $user = Auth::user();
+        // if(!$user->can('list_signalement'))
+        // {
+        //     return redirect(route('home'))->with('info', 'Vous n\'avez pas l\'autorisation requise pour accéder à cette ressource');
+        // }
+
         $signalements = Signalement::with('harcelement')->paginate(2);
         return view('admin.signalements.index', compact('signalements'));
     }
@@ -34,6 +40,11 @@ class SignalementController extends Controller
      */
     public function create()
     {
+        if(!$user->can('create_signalement'))
+        {
+            return redirect(route('home'))->with('info', 'Vous n\'avez pas l\'autorisation requise pour accéder à cette ressource');
+        }
+
         return view('admin.signalements.create', [
             'signalement' => new Signalement(),
             'harcelements' => Harcelement::pluck('type', 'id'),
@@ -43,6 +54,11 @@ class SignalementController extends Controller
 
     public function show(Signalement $signalement)
     {
+        if(!$user->can('show_signalement'))
+        {
+            return redirect(route('home'))->with('info', 'Vous n\'avez pas l\'autorisation requise pour accéder à cette ressource');
+        }
+
         return view('admin.signalements.show', compact('signalement'));
     }
 
@@ -51,6 +67,11 @@ class SignalementController extends Controller
      */
     public function store(StoreSignalementRequest $request)
     {
+        if(!$user->can('create_signalement'))
+        {
+            return redirect(route('home'))->with('info', 'Vous n\'avez pas l\'autorisation requise pour accéder à cette ressource');
+        }
+
         $signalement = Signalement::create($request->validated());
         return to_route('signalement.index')->with('status', 'Ajout effectué avec succès');
     }
@@ -60,6 +81,11 @@ class SignalementController extends Controller
      */
     public function edit(Signalement $signalement)
     {
+        if(!$user->can('edit_signalement'))
+        {
+            return redirect(route('home'))->with('info', 'Vous n\'avez pas l\'autorisation requise pour accéder à cette ressource');
+        }
+
         return view('admin.signalements.edit', [
             'signalement' => $signalement,
             'harcelements' => Harcelement::pluck('type', 'id'),
@@ -71,6 +97,11 @@ class SignalementController extends Controller
      */
     public function update(UpdateSignalementRequest $request, Signalement $signalement)
     {
+        if(!$user->can('edit_signalement'))
+        {
+            return redirect(route('home'))->with('info', 'Vous n\'avez pas l\'autorisation requise pour accéder à cette ressource');
+        }
+
         $signalement->update($request->validated());
         return to_route('signalement.index')->with('status', 'Modification effectuée avec succès');
     }
@@ -80,6 +111,11 @@ class SignalementController extends Controller
      */
     public function destroy(Signalement $signalement)
     {
+        if(!$user->can('delete_signalement'))
+        {
+            return redirect(route('home'))->with('info', 'Vous n\'avez pas l\'autorisation requise pour accéder à cette ressource');
+        }
+
         $signalement->delete();
         return to_route('signalement.index')->with('status', 'suppression effectuée avec succès');
     }
